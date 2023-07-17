@@ -80,6 +80,9 @@
         return;
     }
     function changeStateTo(state){
+        if(currentState==state){
+            return;
+        }
         currentState = state;
         switch(currentState){
             case "STOP":
