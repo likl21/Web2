@@ -73,6 +73,7 @@
             if(usedTime > 86400){
                 usedTime -= 86400;
             }else if(usedTime <0){
+                alert("Time Out!");
                 return true;
             }
             updateTimeDisplay(); 
