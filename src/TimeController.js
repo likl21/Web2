@@ -2,6 +2,7 @@
     var usedTime = 0;
     var timeState = ["STOP","UPDATE","REVERSE"];
     var currentState = "STOP";
+    var alarm = null;
     function waitMilliseconds(duration){
         return new Promise(resolve=>{setTimeout(() => {
             resolve();
@@ -63,6 +64,7 @@
                 usedTime -= 86400;
             }
             updateTimeDisplay(); 
+            alarmCheck();
         }
         return;
     }
@@ -98,6 +100,16 @@
                 break;
         }
     }
+    function setAlarm(x){
+        alarm = Math.floor(Number(x));
+        alarmCheck();
+    }
+    function alarmCheck(){
+        if (usedTime == alarm){
+            alert("Alarm activated!");
+            alarm = null;
+        }
+    }
     window.TimeManager = {
         //返回一个对象，具有hour,minute,second属性
         //属性值为整数
@@ -112,6 +124,8 @@
         getAngle: getAngle,
         //输入一个参数，设定时间到该参数，向下取整，单位为秒
         setTimeTo: setTimeTo,
+        //设置闹钟，传入一个整数秒
+        setAlarm: setAlarm,
         //传入一个字符串，改变时间状态
         //状态有"STOP","UPDATE","REVERSE"三种
         //"STOP"状态下，时间不动
