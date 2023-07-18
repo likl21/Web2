@@ -58,6 +58,7 @@
         let seconds = usedTime - (hours*3600) - (minutes*60);
         hours = Math.max(0,Math.min(Math.floor(hourNum),24));
         usedTime = (hours*3600) + (minutes*60) + seconds;
+        updateTimeDisplay();
     }
     function setMinuteTo(minuteNum){
         let hours = Math.floor(usedTime /3600);
@@ -65,6 +66,7 @@
         let seconds = usedTime - (hours*3600) - (minutes*60);
         minutes = Math.max(0,Math.min(Math.floor(minuteNum),60));
         usedTime = (hours*3600) + (minutes*60) + seconds;
+        updateTimeDisplay();
     }
     function setSecondTo(secondNum){
         let hours = Math.floor(usedTime /3600);
@@ -72,6 +74,7 @@
         let seconds = usedTime - (hours*3600) - (minutes*60);
         seconds = Math.max(0,Math.min(Math.floor(secondNum),60));
         usedTime = (hours*3600) + (minutes*60) + seconds;
+        updateTimeDisplay();
     }
     function updateTimeDisplay(){
         let times = getTimeString();
@@ -80,26 +83,30 @@
     async function updateTime(){
         while(currentState=="UPDATE"){
             await waitMilliseconds(1000);
-            usedTime += 1;
-            if(usedTime > 86400){
-                usedTime -= 86400;
+            if(currentState == "UPDATE"){
+                usedTime += 1;
+                if(usedTime > 86400){
+                    usedTime -= 86400;
+                }
+                updateTimeDisplay(); 
+                alarmCheck();
             }
-            updateTimeDisplay(); 
-            alarmCheck();
         }
         return;
     }
     async function updateTimeReverse(){
         while(currentState=="REVERSE"){
             await waitMilliseconds(1000);
-            usedTime -= 1;
-            if(usedTime > 86400){
-                usedTime -= 86400;
-            }else if(usedTime <0){
-                alert("Time Out!");
-                return true;
+            if(currentState=="REVERSE"){
+                usedTime -= 1;
+                if(usedTime > 86400){
+                    usedTime -= 86400;
+                }else if(usedTime <0){
+                    alert("Time Out!");
+                    return true;
+                }
+                updateTimeDisplay(); 
             }
-            updateTimeDisplay(); 
         }
         return;
     }
