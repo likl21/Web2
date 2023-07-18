@@ -52,6 +52,27 @@
     function setTimeTo(seconds){
         usedTime = Math.floor(seconds);
     }
+    function setHourTo(hourNum){
+        let hours = Math.floor(usedTime /3600);
+        let minutes = Math.floor((usedTime - (hours*3600))/60);
+        let seconds = usedTime - (hours*3600) - (minutes*60);
+        hours = Math.max(0,Math.min(Math.floor(hourNum),24));
+        usedTime = (hours*3600) + (minutes*60) + seconds;
+    }
+    function setMinuteTo(minuteNum){
+        let hours = Math.floor(usedTime /3600);
+        let minutes = Math.floor((usedTime - (hours*3600))/60);
+        let seconds = usedTime - (hours*3600) - (minutes*60);
+        minutes = Math.max(0,Math.min(Math.floor(minuteNum),60));
+        usedTime = (hours*3600) + (minutes*60) + seconds;
+    }
+    function setSecondTo(secondNum){
+        let hours = Math.floor(usedTime /3600);
+        let minutes = Math.floor((usedTime - (hours*3600))/60);
+        let seconds = usedTime - (hours*3600) - (minutes*60);
+        seconds = Math.max(0,Math.min(Math.floor(secondNum),60));
+        usedTime = (hours*3600) + (minutes*60) + seconds;
+    }
     function updateTimeDisplay(){
         let times = getTimeString();
         document.getElementById("TimeCount").innerHTML = `${times.hour}:${times.minute}:${times.second}`;
@@ -124,6 +145,11 @@
         getAngle: getAngle,
         //输入一个参数，设定时间到该参数，向下取整，单位为秒
         setTimeTo: setTimeTo,
+        //输入一个整数，设定小时/分钟/秒为该整数，其他时间参数不变
+        //如23:49:12调用setHourTo(2)后为02:49:12
+        setHourTo: setHourTo,
+        setMinuteTo: setMinuteTo,
+        setSecondTo: setSecondTo,
         //设置闹钟，传入一个整数秒
         setAlarm: setAlarm,
         //传入一个字符串，改变时间状态

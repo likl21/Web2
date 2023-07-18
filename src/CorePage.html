@@ -1,0 +1,22 @@
+<!DOCTYPE html>
+<html lang="zh-cn">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0">
+  <title>时钟</title>
+  <link rel="stylesheet" href="CorePage.css">
+</head>
+<body>
+  <div id="StateButtonBox">  
+    <button class="stateButton">Clock</button>
+    <button class="stateButton">Stopwatch</button>
+    <button class="stateButton">Countdown</button>
+  </div>
+  <form>
+    <input type="number" min="0" max="24">
+  </form>
+  <p id="TimeCount">00:00:00</p>
+</body>
+<script src="./TimeController.js"></script>
+<script src="./StateButton.js"></script>
+</html>
