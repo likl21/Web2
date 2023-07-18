@@ -115,3 +115,4 @@ function TimeInput(){
 }
 
 timeCount.addEventListener("dblclick",TimeInput,false);
+document.getElementById("TipsText").addEventListener("dblclick",TimeInput,false);

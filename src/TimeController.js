@@ -139,6 +139,8 @@
         }
     }
     window.TimeManager = {
+        //输入整数n，等待n ms。
+        waitMilliseconds: waitMilliseconds,
         //返回一个对象，具有hour,minute,second属性
         //属性值为整数
         getTimeNum: getTimeNum,
