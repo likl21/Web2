@@ -37,3 +37,10 @@ body {
     font-weight: bold;
     text-align: center;
 }
+#TipsText{
+    position: relative;
+    bottom: 100px;
+    font-size: medium;
+    font-style: italic;
+    text-decoration-line: underline;
+}
