@@ -47,3 +47,39 @@ body {
     font-style: italic;
 
 }
+circle
+{
+    fill: #CCC;
+    stroke-width: 2px;
+}
+#clock
+{
+    stroke: black;
+    position: absolute;
+    top: 0px;
+    left: 0px;
+}
+#ring
+{
+     stroke: red;
+}
+line
+{
+    stroke: black;
+}
+#hourhand, #minutehand
+{
+    stroke-width: 2px;
+}
+#secondhand ellipse, #secondhand rect, #secondhand path
+{
+    stroke-width: 0;
+}
+.mainmark
+{
+    stroke-width: 5px;
+}
+.submark
+{
+    stroke-width: 4px;
+}
