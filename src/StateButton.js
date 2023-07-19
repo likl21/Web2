@@ -25,15 +25,18 @@ function changeButtonState(state){
     switch (state){
         case "CLOCK":
             window.TimeManager.changeStateTo("UPDATE");
+            stopOrPlayButton.style.display = "none";
             break;
         case "STOPWATCH":
             window.TimeManager.changeStateTo("STOP");
             window.TimeManager.updateTimeDisplay();
             createPrecisionDisplay();
+            stopOrPlayButton.style.display = "";
             break;
         case "COUNTDOWN":
             window.TimeManager.changeStateTo("STOP");
             window.TimeManager.updateTimeDisplay();
+            stopOrPlayButton.style.display = "";
             break;
         default:
             break;
@@ -71,14 +74,28 @@ function changeToCountdown(){
 }
 function stopOrPlay(){
     addClickAnimationFor(stopOrPlayButton);
-    var targetState = window.TimeManager.getCurrentState()=="STOP"?"UPDATE":"STOP";
-    if(targetState == "UPDATE"){
-        if(currentButtonState=="STOPWATCH"){
-            UpdatePrecision();
+    if(currentButtonState=="STOPWATCH"){
+        var targetState = window.TimeManager.getCurrentState()=="STOP"?"UPDATE":"STOP";
+        if(targetState == "UPDATE"){
+            stopOrPlayButton.innerHTML = "Pause";
+            if(currentButtonState=="STOPWATCH"){
+                UpdatePrecision();
+            }else{
+                window.TimeManager.updateTime();
+            }
+            
         }else{
-            window.TimeManager.updateTime();
+            stopOrPlayButton.innerHTML = "Play";
         }
-        
+    }
+    if(currentButtonState=="COUNTDOWN"){
+        var targetState = window.TimeManager.getCurrentState()=="STOP"?"REVERSE":"STOP";
+        if(targetState == "REVERSE"){
+            stopOrPlayButton.innerHTML = "Pause";
+            
+        }else{
+            stopOrPlayButton.innerHTML = "Play";
+        }
     }
     window.TimeManager.changeStateTo(targetState);
     
@@ -123,7 +140,8 @@ window.ButtonManager ={
     bindButtonClick: bindButtonClick,
     getCurrentButtonState: getCurrentButtonState,
     addClickAnimationFor: addClickAnimationFor,
-    updatePrecisionDisplay: updatePrecisionDisplay
+    updatePrecisionDisplay: updatePrecisionDisplay,
+    stopOrPlay: stopOrPlay
 }
 })();
 ButtonManager.bindButtonClick();

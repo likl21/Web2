@@ -3,6 +3,9 @@
     var timeState = ["STOP","UPDATE","REVERSE"];
     var currentState = "STOP";
     var alarm = null;
+    var audio = document.createElement("audio");
+    audio.src = "../resources/AlarmSound.mp3";
+    audio.loop = true; 
     function waitMilliseconds(duration){
         return new Promise(resolve=>{setTimeout(() => {
             resolve();
@@ -125,8 +128,14 @@
                 usedTime -= 1;
                 if(usedTime > 86400){
                     usedTime -= 86400;
-                }else if(usedTime <0){
+                }else if(usedTime < 0){
+                    
+                    usedTime = 0;
+                    audio.play();
                     alert("Time Out!");
+                    audio.pause();
+                    window.ButtonManager.stopOrPlay();
+                    changeStateTo("STOP");
                     return true;
                 }
                 updateTimeDisplay(); 
