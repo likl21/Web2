@@ -43,8 +43,8 @@
     function getAngle(){
         let timesNum = getTimeNum();
         let timesAngle ={
-            hour: timesNum.hour*30,
-            minute: timesNum.minute*6,
+            hour: timesNum.hour*30 + timesNum.minute*0.5,
+            minute: timesNum.minute*6 + timesNum.second*0.1,
             second: timesNum.second*6
         };
         return timesAngle;
