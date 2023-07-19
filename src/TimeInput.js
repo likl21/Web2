@@ -73,16 +73,15 @@ function TimeInput(){
                     break;
                 case "SECOND":
                     window.TimeManager.setSecondTo(inputObj.value);
-                    window.TimeManager.changeStateTo("UPDATE");
+                    window.TimeManager.changeStateTo(window.ButtonManager.getCurrentButtonState()=="CLOCK"?"UPDATE":"STOP");
                     break;
                 default:
                     break;
             }
 
         }else{
-            window.TimeManager.changeStateTo("UPDATE");
+            window.TimeManager.changeStateTo(window.ButtonManager.getCurrentButtonState()=="CLOCK"?"UPDATE":"STOP");
         }
-        //TODO:next obj
     }
     function styleSync(obj){
         obj.type = "text";

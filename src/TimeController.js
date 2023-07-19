@@ -50,6 +50,9 @@
         return timesAngle;
     }
     function setTimeTo(seconds){
+        if(seconds ==null){
+            seconds = 0;
+        }
         usedTime = Math.floor(seconds);
     }
     function setHourTo(hourNum){
@@ -127,6 +130,7 @@
             default:
                 break;
         }
+        updateTimeDisplay();
     }
     function setAlarm(x){
         alarm = Math.floor(Number(x));
@@ -161,6 +165,7 @@
         setSecondTo: setSecondTo,
         //设置闹钟，传入一个整数秒
         setAlarm: setAlarm,
+        updateTimeDisplay: updateTimeDisplay,
         //传入一个字符串，改变时间状态
         //状态有"STOP","UPDATE","REVERSE"三种
         //"STOP"状态下，时间不动
