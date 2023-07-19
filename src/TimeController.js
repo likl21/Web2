@@ -40,6 +40,9 @@
     function getCurrentTime(){
         return usedTime;
     }
+    function getCurrentState(){
+        return currentState;
+    }
     function getAngle(){
         let timesNum = getTimeNum();
         let timesAngle ={
@@ -122,7 +125,7 @@
             case "STOP":
                 break;
             case "UPDATE":
-                updateTime();
+                window.TimeManager.updateTime();
                 break;
             case "REVERSE":
                 updateTimeReverse();
@@ -156,6 +159,8 @@
         //获取当前角度，返回一个对象，具有hour,minute,second属性
         //属性值为整数
         getAngle: getAngle,
+        //获取当前状态
+        getCurrentState: getCurrentState,
         //输入一个参数，设定时间到该参数，向下取整，单位为秒
         setTimeTo: setTimeTo,
         //输入一个整数，设定小时/分钟/秒为该整数，其他时间参数不变
@@ -165,7 +170,9 @@
         setSecondTo: setSecondTo,
         //设置闹钟，传入一个整数秒
         setAlarm: setAlarm,
+        //更新时间显示(会重置timeCount文本状态)
         updateTimeDisplay: updateTimeDisplay,
+        updateTime: updateTime,
         //传入一个字符串，改变时间状态
         //状态有"STOP","UPDATE","REVERSE"三种
         //"STOP"状态下，时间不动

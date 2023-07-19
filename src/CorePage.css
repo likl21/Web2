@@ -1,7 +1,8 @@
 body {
     background-color: #F4EEFF;
+    overflow-x: hidden;
 }
-.stateButton {
+.stateButton,.functionalButton{
     position: relative;
     right: 0px;
     height: 71px;
@@ -17,11 +18,21 @@ body {
     width: 300px;
     transition: 0.8s;
 }
-.stateButton:hover {
+.stateButton:hover{
     background-color: #424874;
     right: 40px;
     height: 80px;
 }
+.functionalButton{
+    border-radius: 20px;
+    transition: 0.5s;
+}
+.functionalButton:hover{
+    background-color: #424874;
+    height: 80px;
+    width: 350px;
+}
+
 #StateButtonBox{
     position: absolute;
     top: 30%;
@@ -38,6 +49,7 @@ body {
     font-size: 150px;
     font-weight: bold;
     text-align: center;
+    z-index: 100;
 }
 #TipsText{
     position: relative;
@@ -46,4 +58,7 @@ body {
     font-size: medium;
     font-style: italic;
 
+}
+#FunctionalButtonBox{
+    text-align: center;
 }

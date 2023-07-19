@@ -26,7 +26,7 @@ function TimeInput(){
 
                     var minuteObj = document.createElement("input");
                     styleSync(minuteObj);
-                    minuteObj.style.right = "760px";
+                    minuteObj.style.right = "410px";
                     element.appendChild(minuteObj);
                     minuteObj.focus();
                     minuteObj.value = timeString.minute;
@@ -51,7 +51,7 @@ function TimeInput(){
 
                     var secondObj = document.createElement("input");
                     styleSync(secondObj);
-                    secondObj.style.right = "530px";
+                    secondObj.style.right = "190px";
                     element.appendChild(secondObj);
                     secondObj.focus();
                     secondObj.value = timeString.second;
@@ -80,19 +80,20 @@ function TimeInput(){
             }
 
         }else{
+            hourObj.remove();
             window.TimeManager.changeStateTo(window.ButtonManager.getCurrentButtonState()=="CLOCK"?"UPDATE":"STOP");
         }
     }
     function styleSync(obj){
         obj.type = "text";
-        obj.style.position = "absolute";
+        obj.style.position = "relative";
         obj.style.fontSize = "150px";
         obj.style.width = "180px";
         obj.style.border = "0px";
         obj.style.outline = "none";
     }
     styleSync(hourObj);
-    hourObj.style.right = "990px";
+    hourObj.style.right = "640px";
     element.appendChild(hourObj);
     hourObj.focus();
     hourObj.value = timeString.hour;
