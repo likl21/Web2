@@ -46,11 +46,23 @@
     function getAngle(){
         let timesNum = getTimeNum();
         let timesAngle ={
-            hour: timesNum.hour*30 + timesNum.minute*0.5,
+            hour: timesNum.hour*30 + timesNum.minute*0.5 + timesNum.second/120.0,
             minute: timesNum.minute*6 + timesNum.second*0.1,
             second: timesNum.second*6
         };
         return timesAngle;
+    }
+    function updateClockDisplay()
+    {
+        var minhand = document.getElementById("minutehand");
+        var hourhand = document.getElementById("hourhand");
+        var sechand = document.getElementById("secondhand");
+        
+        var timesAngle = getAngle();
+
+        minhand.setAttribute("transform", "rotate(" + timesAngle.minute + ", 200, 200)");
+        hourhand.setAttribute("transform", "rotate(" + timesAngle.hour + ", 200, 200)");
+        sechand.setAttribute("transform", "rotate(" + timesAngle.second + ", 200, 200)");
     }
     function setTimeTo(seconds){
         if(seconds ==null){
@@ -65,6 +77,7 @@
         hours = Math.max(0,Math.min(Math.floor(hourNum),24));
         usedTime = (hours*3600) + (minutes*60) + seconds;
         updateTimeDisplay();
+        updateClockDisplay();
     }
     function setMinuteTo(minuteNum){
         let hours = Math.floor(usedTime /3600);
@@ -73,6 +86,7 @@
         minutes = Math.max(0,Math.min(Math.floor(minuteNum),60));
         usedTime = (hours*3600) + (minutes*60) + seconds;
         updateTimeDisplay();
+        updateClockDisplay();
     }
     function setSecondTo(secondNum){
         let hours = Math.floor(usedTime /3600);
@@ -81,6 +95,7 @@
         seconds = Math.max(0,Math.min(Math.floor(secondNum),60));
         usedTime = (hours*3600) + (minutes*60) + seconds;
         updateTimeDisplay();
+        updateClockDisplay();
     }
     function updateTimeDisplay(){
         let times = getTimeString();
@@ -94,7 +109,10 @@
                 if(usedTime > 86400){
                     usedTime -= 86400;
                 }
-                updateTimeDisplay(); 
+                updateTimeDisplay();
+                
+                updateClockDisplay(); // 测试时针显示是否正确，可删去
+
                 alarmCheck();
             }
         }
@@ -161,6 +179,8 @@
         getAngle: getAngle,
         //获取当前状态
         getCurrentState: getCurrentState,
+        //更新时钟指针至当前时间
+        updateClockDisplay: updateClockDisplay,
         //输入一个参数，设定时间到该参数，向下取整，单位为秒
         setTimeTo: setTimeTo,
         //输入一个整数，设定小时/分钟/秒为该整数，其他时间参数不变

@@ -12,6 +12,36 @@
     <button class="stateButton" id="StateButton--Stopwatch">Stopwatch</button>
     <button class="stateButton" id="StateButton--Countdown">Countdown</button>
   </div>
+  <svg id="clock" width="400" height="400">   
+    <circle id="face" cx="200" cy="200" r="190"/>
+    <g id="tickmark">
+      <line id="mark-1"  class="mainmark" x1="200"     y1="20"      x2="200"     y2="50"/>
+      <line id="mark-2"  class="submark"  x1="277.500" y1="65.766"  x2="287.500" y2="48.446"/>
+      <line id="mark-3"  class="submark"  x1="334.233" y1="122.500" x2="351.554" y2="112.500"/>
+      <line id="mark-4"  class="mainmark" x1="380"     y1="200"     x2="350"     y2="200"/>
+      <line id="mark-5"  class="submark"  x1="334.233" y1="277.500" x2="351.554" y2="287.500"/>
+      <line id="mark-6"  class="submark"  x1="277.500" y1="334.233" x2="287.500" y2="351.554"/>
+      <line id="mark-7"  class="mainmark" x1="200"     y1="380"     x2="200"     y2="350"/>
+      <line id="mark-8"  class="submark"  x1="122.500" y1="334.233" x2="112.500" y2="351.554"/>
+      <line id="mark-9"  class="submark"  x1="65.766"  y1="277.500" x2="48.446"  y2="287.500"/>
+      <line id="mark-10" class="mainmark" x1="20"      y1="200"     x2="50"      y2="200"/>
+      <line id="mark-11" class="submark"  x1="65.766"  y1="122.500" x2="48.446"  y2="112.500"/>
+      <line id="mark-12" class="submark"  x1="122.500" y1="65.766" x2="112.500" y2="48.446"/>
+      </g>
+    <g id="hourhand">
+        <polygon points="198.4,188.6 201.6,188.6 200.5,110 199.5,110"/>
+    </g>
+    <g id="minutehand">
+        <polygon points="198.4,188.6 201.6,188.6 200.5,60 199.5,60"/>
+    </g>
+    <circle id="ring" cx="200" cy="200" r="10"/>
+    <g id="secondhand">
+      <ellipse ry="24"  rx="2" id="ellipse-1" cy="167" cx="200" fill="red"/>
+      <ellipse ry="1.5" rx="9" id="ellipse-2" cy="143" cx="200" fill="red"/>
+      <rect id="rect-1" height="40" width="3" y="102" x="198.5" fill="red"/>
+      <path id="foo" d="m200,105c-10,-20 -4,-32 0,-80m0,80c10,-20 4,-32 0,-80" fill="red"/>
+    </g>
+  </svg>
   <div id="TimeBox">
     <p id="TimeCount">00:00:00</p>
     <p id="TipsText">双击时间数字以进行更改</p>
