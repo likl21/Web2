@@ -55,6 +55,7 @@ function createPrecisionDisplay(){
     precisionDisplay.style.left = "370px";
     precisionDisplay.style.fontSize = "80px";
     precisionDisplay.style.zIndex = "-1";
+    updatePrecisionDisplay();
 }
 function changeToClock(){
     addClickAnimationFor(clockButton);
@@ -113,7 +114,10 @@ async function UpdatePrecision(){
     
 }
 function updatePrecisionDisplay(){
-    precisionDisplay.innerHTML = "."+morePrecision;
+    if(morePrecision>=100){
+        morePrecision = 0;
+    }
+    precisionDisplay.innerHTML = "."+ (morePrecision <= 10? "0"+String(morePrecision):morePrecision);
 }
 window.ButtonManager ={
     bindButtonClick: bindButtonClick,
