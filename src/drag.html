@@ -1,0 +1,313 @@
+﻿<!DOCTYPE html>
+<html>
+<head>
+    <title>可交互的表盘</title>
+    <style>
+        svg {
+            border: 1px solid black;
+            cursor: pointer;
+        }
+    </style>
+</head>
+<body>
+    <svg id="clock" width="400" height="400">
+        <circle cx="200" cy="200" r="180" fill="white" stroke="black" stroke-width="2" />
+
+        <!-- 秒针 -->
+        <line id="secondhand" x1="200" y1="200" x2="200" y2="60" stroke="red" stroke-width="2" />
+
+        <!-- 分针 -->
+        <line id="minutehand" x1="200" y1="200" x2="200" y2="90" stroke="blue" stroke-width="4" />
+
+        <!-- 时针 -->
+        <line id="hourhand" x1="200" y1="200" x2="200" y2="120" stroke="green" stroke-width="6" />
+    </svg>
+    <p id="TimeCount"></p>
+    <p>rotation: <span id="rotationValue"></span></p>
+    <p>usedTime:<span id="usedTime_value"></span></p>
+    <p>hourangle:<span id="hourangle_value"></span></p>
+    <p>minangle:<span id="minangle_value"></span></p>
+    <p>secangle:<span id="secangle_value"></span></p>
+    <p>hours:<span id="hour_value"></span></p>
+    <script>
+        var clock = document.getElementById('clock');
+        var secondHand = document.getElementById('secondhand');
+        var minuteHand = document.getElementById('minutehand');
+        var hourHand = document.getElementById('hourhand');
+        var isSecondHandSelected = false;
+        var isMinuteHandSelected = false;
+        var isHourHandSelected = false;
+        var usedTime = 0;
+        var min_count = 0;
+        var initialSecondAngle = 0;
+        var initialMinuteAngle = 0;
+        var initialHourAngle = 0;
+
+        // 获取时针、分针、秒针的旋转角度
+        /*function getAngle() {
+            var now = new Date(usedTime * 1000);
+            var hours = now.getHours();
+            var minutes = now.getMinutes();
+            var seconds = now.getSeconds();
+            document.getElementById("hour_value").textContent = hours;
+            var secondAngle = seconds * 6;
+            var minuteAngle = minutes * 6 + seconds * 0.1;
+            var hourAngle = hours * 30 + minutes * 0.5;
+            document.getElementById("hourangle_value").textContent = hourAngle;
+            document.getElementById("minangle_value").textContent = minuteAngle;
+            document.getElementById("secangle_value").textContent = secondAngle;
+            return {
+                second: secondAngle,
+                minute: minuteAngle,
+                hour: hourAngle
+            };
+        }*/
+        function getTimeNum() {
+            let hours = Math.floor(usedTime / 3600);
+            let minutes = Math.floor((usedTime - (hours * 3600)) / 60);
+            let seconds = usedTime - (hours * 3600) - (minutes * 60);
+            let times = {
+                hour: hours,
+                minute: minutes,
+                second: seconds
+            };
+            return times;
+        }
+        function getTimeString() {
+            let hours = Math.floor(usedTime / 3600);
+            let minutes = Math.floor((usedTime - (hours * 3600)) / 60);
+            let seconds = usedTime - (hours * 3600) - (minutes * 60);
+            let rawTimes = [String(hours), String(minutes), String(seconds)];
+            let timesArray = rawTimes.map((num) => {
+                if (Number(num) < 10) {
+                    return "0" + num;
+                }
+                return num;
+            })
+            let times = {
+                hour: timesArray[0],
+                minute: timesArray[1],
+                second: timesArray[2]
+            };
+            return times;
+        }
+        function getCurrentTime() {
+            return usedTime;
+        }
+        
+        function getAngle() {
+            let timesNum = getTimeNum();
+            let timesAngle = {
+                hour: timesNum.hour * 30 + timesNum.minute * 0.5 + timesNum.second / 120.0,
+                minute: timesNum.minute * 6 + timesNum.second * 0.1,
+                second: timesNum.second * 6
+            };
+            return timesAngle;
+        }
+        // 更新表盘显示
+        function updateClockDisplay() {
+            var angles = getAngle();
+            secondHand.setAttribute("transform", "rotate(" + angles.second + ", 200, 200)");
+            minuteHand.setAttribute("transform", "rotate(" + angles.minute + ", 200, 200)");
+            hourHand.setAttribute("transform", "rotate(" + angles.hour + ", 200, 200)");
+            initialSecondAngle = angles.second;
+            initialHourAngle = angles.hour;
+            initialMinuteAngle = angles.minute;
+            document.getElementById("hourangle_value").textContent = initialHourAngle;
+            document.getElementById("minangle_value").textContent = angles.minute;
+            document.getElementById("secangle_value").textContent = angles.second;
+        }
+
+        // 更新时间显示
+        function updateTimeDisplay() {
+            let times = getTimeString();
+            document.getElementById("TimeCount").innerHTML = `${times.hour}:${times.minute}:${times.second}`;
+        }
+
+        // 鼠标按下事件处理程序
+        function handleMouseDown(event, element) {
+            event.preventDefault();
+            element.classList.add('selected'); // 添加选中样式
+            //usedTime = initialHourAngle * 120 + initialMinuteAngle * 10 + initialSecondAngle / 6;
+            document.getElementById("usedTime_value").textContent = usedTime;
+            if (element === secondHand) {
+                isSecondHandSelected = true;
+                isMinuteHandSelected = false;
+                isHourHandSelected = false;
+                //initialSecondAngle = Math.atan2(mouseY - centerY, mouseX - centerX);
+            } else if (element === minuteHand) {
+                isMinuteHandSelected = true;
+                isSecondHandSelected = false;
+                isHourHandSelected = false;
+                //initialMinuteAngle = Math.atan2(mouseY - centerY, mouseX - centerX);
+            } else if (element === hourHand) {
+                isHourHandSelected = true;
+                isSecondHandSelected = false;
+                isMinuteHandSelected = false;
+                //initialHourAngle = Math.atan2(mouseY - centerY, mouseX - centerX);
+            }
+        }
+
+        // 鼠标松开事件处理程序
+        function handleMouseUp() {
+            secondHand.classList.remove('selected');
+            minuteHand.classList.remove('selected');
+            hourHand.classList.remove('selected');
+            isSecondHandSelected = false;
+            isMinuteHandSelected = false;
+            isHourHandSelected = false;
+
+            var finalAngles = getAngle();
+            initialSecondAngle = finalAngles.second;
+            initialHourAngle = finalAngles.hour;
+            initialMinuteAngle = finalAngles.minute;
+        }
+        function setHourTo(hourNum) {
+            let hours = Math.floor(usedTime / 3600);
+            let minutes = Math.floor((usedTime - (hours * 3600)) / 60);
+            let seconds = usedTime - (hours * 3600) - (minutes * 60);
+            hours = Math.max(0, Math.min(Math.floor(hourNum), 24));
+            usedTime = (hours * 3600) + (minutes * 60) + seconds;
+            updateTimeDisplay();
+            updateClockDisplay();
+        }
+        /*function setHourTo(hourNum) {
+
+            usedTime = hourNum * 3600;
+            updateTimeDisplay();
+            updateClockDisplay();
+        }*/
+
+
+        /*function setMinuteTo(minuteNum) {
+
+
+            //usedTime = usedTime + Math.floor(minuteNum) * 60;
+            //let hours = Math.floor(usedTime / 3600);
+            //let minutes = Math.floor((usedTime - (hours * 3600)) / 60);
+            //let seconds = usedTime - (hours * 3600) - (minutes * 60);
+            //minutes = Math.max(0, Math.min(Math.floor(minuteNum), 60));
+            usedTime = minuteNum * 60;
+            if (minuteNum === 59.00) {
+                usedTime += 60;
+            }
+            updateTimeDisplay();
+            updateClockDisplay();
+        }*/
+        var min_flag = false;
+        var total_count = 0;
+        function setMinuteTo(minuteNum) {
+            if (minuteNum === 59) {
+                min_flag = true ;
+            }
+            
+            
+            let hours = Math.floor(usedTime / 3600);
+            let minutes = Math.floor((usedTime - (hours * 3600)) / 60);
+            let seconds = usedTime - (hours * 3600) - (minutes * 60);
+            minutes = Math.max(0, Math.min(Math.floor(minuteNum), 60));
+            usedTime = (hours * 3600) + (minutes * 60) + seconds;
+            updateTimeDisplay();
+            updateClockDisplay();
+            if (minuteNum === 0 && min_flag === true) {
+
+                min_flag = false;
+                total_count = total_count + 3600;
+                usedTime = total_count;
+                updateTimeDisplay();
+                updateClockDisplay();
+            }
+        }
+        var sec_flag = false;
+        var sec_count = 0;
+        function setSecondTo(secondNum) {
+            if (secondNum === 59) {
+                sec_flag = true;
+            }
+            let hours = Math.floor(usedTime / 3600);
+            let minutes = Math.floor((usedTime - (hours * 3600)) / 60);
+            let seconds = usedTime - (hours * 3600) - (minutes * 60);
+            seconds = Math.max(0, Math.min(Math.floor(secondNum), 60));
+            usedTime = (hours * 3600) + (minutes * 60) + seconds;
+            updateTimeDisplay();
+            updateClockDisplay();
+            if (secondNum === 0 && sec_flag === true) {
+
+                sec_flag = false;
+                sec_count = sec_count + 60;
+                usedTime = sec_count;
+                updateTimeDisplay();
+                updateClockDisplay();
+            }
+        }
+        // 鼠标移动事件处理程序
+        function handleMouseMove(event) {
+            var rect = clock.getBoundingClientRect();
+            var centerX = rect.left + rect.width / 2;
+            var centerY = rect.top + rect.height / 2;
+            var mouseX = event.clientX;
+            var mouseY = event.clientY;
+
+            //var angles = getAngle();
+            //var initialSecondAngle = -Math.PI / 2;
+            //var initialMinuteAngle = -Math.PI / 2;
+            //var initialHourAngle = -Math.PI / 2;
+            //关于这部分，考虑到使用usedTIme来表示时间，那么就不能使用连续值，因为连续值的使用，
+            //比如转动分针，要求秒针不转动，则必然小数上会产生余数，导致秒针转动，所以采用的是这种方式
+            if (isSecondHandSelected) {
+                var angle = Math.atan2(mouseY - centerY, mouseX - centerX);
+                var rotation = (Math.round((angle + Math.PI / 2) * 60 / (2 * Math.PI)) + 60) % 60;
+                //usedTime += rotation;
+
+                document.getElementById('rotationValue').textContent = rotation.toFixed(2);
+                //updateTimeDisplay();
+                //updateClockDisplay();
+                setSecondTo(rotation);
+            }
+
+            if (isMinuteHandSelected) {
+                var angle = Math.atan2(mouseY - centerY, mouseX - centerX);
+                var rotation = (Math.round((angle + Math.PI / 2) * 60 / (2 * Math.PI)) + 60) % 60;
+                //usedTime += rotation * 60;
+                //updateTimeDisplay();
+                //updateClockDisplay();
+
+                setMinuteTo(rotation);
+
+                document.getElementById('rotationValue').textContent = rotation.toFixed(2);
+
+            }
+
+            if (isHourHandSelected) {
+                var angle = Math.atan2(mouseY - centerY, mouseX - centerX);
+                var rotation = (Math.round((angle + Math.PI / 2) * 12 / (2 * Math.PI))+12)%12;
+                /*usedTime += rotation * 3600;
+                updateTimeDisplay();
+                updateClockDisplay();*/
+                document.getElementById('rotationValue').textContent = rotation.toFixed(2);
+                setHourTo(rotation);
+            }
+            
+
+        }
+
+        // 事件监听
+        secondHand.addEventListener('mousedown', function (event) {
+            handleMouseDown(event, secondHand);
+        });
+        minuteHand.addEventListener('mousedown', function (event) {
+            handleMouseDown(event, minuteHand);
+        });
+        hourHand.addEventListener('mousedown', function (event) {
+            handleMouseDown(event, hourHand);
+        });
+        document.addEventListener('mouseup', function () {
+            handleMouseUp();
+        });
+        clock.addEventListener('mousemove', handleMouseMove);
+
+        // 初始更新时间和表盘显示
+        
+    </script>
+</body>
+</html>
