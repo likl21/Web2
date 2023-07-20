@@ -61,10 +61,17 @@ body {
 }
 #FunctionalButtonBox{
     position: absolute;
-    bottom: 200px;
+    bottom: 100px;
     left: 0;
     right: 0;
+    height: 200px;
     text-align: center;
+}
+#AlarmText{
+    margin:0;
+    font-size: 100px;
+    text-align: center;
+    z-index: 100;
 }
 circle
 {

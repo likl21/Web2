@@ -5,9 +5,11 @@ var clockButton = document.getElementById("StateButton--Clock");
 var stopwatchButton = document.getElementById("StateButton--Stopwatch");
 var countdownButton = document.getElementById("StateButton--Countdown");
 var stopOrPlayButton = document.getElementById("StopOrPlayButton");
+var setAlarmButton = document.getElementById("SetAlarmButton");
 var currentButtonState = "CLOCK";
 var morePrecision = 0;
 var timeCountText = document.getElementById("TimeCount");
+var alarmText = document.getElementById("AlarmText");
 var precisionDisplay;
 function getCurrentButtonState(){
     return currentButtonState;
@@ -26,17 +28,23 @@ function changeButtonState(state){
         case "CLOCK":
             window.TimeManager.changeStateTo("UPDATE");
             stopOrPlayButton.style.display = "none";
+            alarmText.style.display = "";
+            setAlarmButton.style.display = "";
             break;
         case "STOPWATCH":
             window.TimeManager.changeStateTo("STOP");
             window.TimeManager.updateTimeDisplay();
             createPrecisionDisplay();
             stopOrPlayButton.style.display = "";
+            alarmText.style.display = "none";
+            setAlarmButton.style.display = "none";
             break;
         case "COUNTDOWN":
             window.TimeManager.changeStateTo("STOP");
             window.TimeManager.updateTimeDisplay();
             stopOrPlayButton.style.display = "";
+            alarmText.style.display = "none";
+            setAlarmButton.style.display = "none";
             break;
         default:
             break;
@@ -98,14 +106,25 @@ function stopOrPlay(){
         }
     }
     window.TimeManager.changeStateTo(targetState);
-    
-    
+}
+function setAlarm(){
+    addClickAnimationFor(setAlarmButton);
+    if(window.TimeManager.getIsAlarming()){
+        window.TimeManager.stopAlarm();
+    }
+    window.TimeManager.changeAlarmState();
+    if(window.TimeManager.alarmIsActive()){
+        setAlarmButton.innerHTML = "Cancel&nbsp;Alarm";
+    }else{
+        setAlarmButton.innerHTML = "Set&nbsp;Alarm";
+    }
 }
 function bindButtonClick(){
     clockButton.onclick = changeToClock;
     stopwatchButton.onclick = changeToStopwatch;
     countdownButton.onclick = changeToCountdown;
     stopOrPlayButton.onclick = stopOrPlay;
+    setAlarmButton.onclick = setAlarm;
 }
 async function UpdatePrecision(){
     let originalUpdate = window.TimeManager.updateTime;
@@ -136,12 +155,18 @@ function updatePrecisionDisplay(){
     }
     precisionDisplay.innerHTML = "."+ (morePrecision <= 10? "0"+String(morePrecision):morePrecision);
 }
+function initeButton(){
+    stopOrPlayButton.style.display = "none";
+    bindButtonClick();
+}
 window.ButtonManager ={
     bindButtonClick: bindButtonClick,
     getCurrentButtonState: getCurrentButtonState,
     addClickAnimationFor: addClickAnimationFor,
     updatePrecisionDisplay: updatePrecisionDisplay,
-    stopOrPlay: stopOrPlay
+    stopOrPlay: stopOrPlay,
+    initeButton: initeButton,
+    setAlarmButton: setAlarmButton
 }
 })();
-ButtonManager.bindButtonClick();
+ButtonManager.initeButton();

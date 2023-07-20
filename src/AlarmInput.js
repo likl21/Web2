@@ -1,8 +1,10 @@
-timeCount = document.getElementById("TimeCount");
-function TimeInput(){
-    element = timeCount;
-    window.TimeManager.changeStateTo("STOP");
-    var timeString = window.TimeManager.getTimeString();
+alarmCount = document.getElementById("AlarmText");
+var hourNum = 0;
+var minuteNum = 0;
+var secondNum = 0;
+function AlarmInput(){
+    element = alarmCount;
+    var timeString = window.TimeManager.getAlarmString();
     var oldhtml = element.innerHTML;
     var hourObj = document.createElement("input");
     function limitInput(inputObj, maxNum){
@@ -22,11 +24,10 @@ function TimeInput(){
         if(inputObj.value && inputObj.value.trim() != null){
             switch(type){
                 case "HOUR":
-                    window.TimeManager.setHourTo(inputObj.value);
-
+                    window.TimeManager.setAlarmHour(inputObj.value);
                     var minuteObj = document.createElement("input");
                     styleSync(minuteObj);
-                    minuteObj.style.right = "410px";
+                    minuteObj.style.right = "260px";
                     element.appendChild(minuteObj);
                     minuteObj.focus();
                     minuteObj.value = timeString.minute;
@@ -47,11 +48,11 @@ function TimeInput(){
                     minuteObj.setSelectionRange(0,2);
                     break;
                 case "MINUTE":
-                    window.TimeManager.setMinuteTo(inputObj.value);
+                    window.TimeManager.setAlarmMinute(inputObj.value);
 
                     var secondObj = document.createElement("input");
                     styleSync(secondObj);
-                    secondObj.style.right = "190px";
+                    secondObj.style.right = "120px";
                     element.appendChild(secondObj);
                     secondObj.focus();
                     secondObj.value = timeString.second;
@@ -72,8 +73,7 @@ function TimeInput(){
                     secondObj.setSelectionRange(0,2);
                     break;
                 case "SECOND":
-                    window.TimeManager.setSecondTo(inputObj.value);
-                    window.TimeManager.changeStateTo(window.ButtonManager.getCurrentButtonState()=="CLOCK"?"UPDATE":"STOP");
+                    window.TimeManager.setAlarmSecond(inputObj.value);
                     break;
                 default:
                     break;
@@ -81,19 +81,18 @@ function TimeInput(){
 
         }else{
             hourObj.remove();
-            window.TimeManager.changeStateTo(window.ButtonManager.getCurrentButtonState()=="CLOCK"?"UPDATE":"STOP");
         }
     }
     function styleSync(obj){
         obj.type = "text";
         obj.style.position = "relative";
-        obj.style.fontSize = "150px";
-        obj.style.width = "180px";
+        obj.style.fontSize = "100px";
+        obj.style.width = "115px";
         obj.style.border = "0px";
         obj.style.outline = "none";
     }
     styleSync(hourObj);
-    hourObj.style.right = "640px";
+    hourObj.style.right = "400px";
     element.appendChild(hourObj);
     hourObj.focus();
     hourObj.value = timeString.hour;
@@ -114,5 +113,4 @@ function TimeInput(){
     hourObj.setSelectionRange(0,2);
 }
 
-timeCount.addEventListener("dblclick",TimeInput,false);
-document.getElementById("TipsText").addEventListener("dblclick",TimeInput,false);
+alarmCount.addEventListener("dblclick",AlarmInput,false);

@@ -2,7 +2,9 @@
     var usedTime = 0;
     var timeState = ["STOP","UPDATE","REVERSE"];
     var currentState = "STOP";
-    var alarm = null;
+    var isActivedAlarm = false;
+    var isAlarming = false;
+    var alarm = 0;
     var audio = document.createElement("audio");
     audio.src = "../resources/AlarmSound.mp3";
     audio.loop = true; 
@@ -79,6 +81,9 @@
         let seconds = usedTime - (hours*3600) - (minutes*60);
         hours = Math.max(0,Math.min(Math.floor(hourNum),24));
         usedTime = (hours*3600) + (minutes*60) + seconds;
+        if(usedTime > 86400){
+            usedTime -= 86400;
+        }
         updateTimeDisplay();
         updateClockDisplay();
     }
@@ -88,6 +93,9 @@
         let seconds = usedTime - (hours*3600) - (minutes*60);
         minutes = Math.max(0,Math.min(Math.floor(minuteNum),60));
         usedTime = (hours*3600) + (minutes*60) + seconds;
+        if(usedTime > 86400){
+            usedTime -= 86400;
+        }
         updateTimeDisplay();
         updateClockDisplay();
     }
@@ -97,12 +105,19 @@
         let seconds = usedTime - (hours*3600) - (minutes*60);
         seconds = Math.max(0,Math.min(Math.floor(secondNum),60));
         usedTime = (hours*3600) + (minutes*60) + seconds;
+        if(usedTime > 86400){
+            usedTime -= 86400;
+        }
         updateTimeDisplay();
         updateClockDisplay();
     }
     function updateTimeDisplay(){
         let times = getTimeString();
         document.getElementById("TimeCount").innerHTML = `${times.hour}:${times.minute}:${times.second}`;
+    }
+    function updateAlarmDisplay(){
+        let times = getAlarmString();
+        document.getElementById("AlarmText").innerHTML = `${times.hour}:${times.minute}:${times.second}`;
     }
     async function updateTime(){
         while(currentState=="UPDATE"){
@@ -163,14 +178,77 @@
         updateTimeDisplay();
     }
     function setAlarm(x){
+        if(alarm > 86400){
+            alarm -= 86400;
+        }
         alarm = Math.floor(Number(x));
         alarmCheck();
     }
     function alarmCheck(){
-        if (usedTime == alarm){
-            alert("Alarm activated!");
-            alarm = null;
+        if(!isActivedAlarm){
+            return;
         }
+        if (usedTime == alarm){
+            isAlarming = true;
+            audio.play();
+            window.ButtonManager.setAlarmButton.innerHTML = "Stop&nbsp;Alarming";
+        }
+    }
+    function stopAlarm(){
+        audio.currentTime = 0;
+        audio.pause();
+    }
+    function getAlarmString(){
+        var orgUsedTime = usedTime;
+        usedTime = alarm;
+        var times = getTimeString();
+        usedTime = orgUsedTime;
+        return times;
+    }
+    function setAlarmHour(hourNum){
+        let hours = Math.floor(alarm /3600);
+        let minutes = Math.floor((alarm - (hours*3600))/60);
+        let seconds = alarm - (hours*3600) - (minutes*60);
+        hours = Math.max(0,Math.min(Math.floor(hourNum),24));
+        alarm = (hours*3600) + (minutes*60) + seconds;
+        if(alarm > 86400){
+            alarm -= 86400;
+        }
+        updateAlarmDisplay();
+    }
+    function setAlarmMinute(minuteNum){
+        let hours = Math.floor(alarm /3600);
+        let minutes = Math.floor((alarm - (hours*3600))/60);
+        let seconds = alarm - (hours*3600) - (minutes*60);
+        minutes = Math.max(0,Math.min(Math.floor(minuteNum),60));
+        alarm = (hours*3600) + (minutes*60) + seconds;
+        if(alarm > 86400){
+            alarm -= 86400;
+        }
+        updateAlarmDisplay();
+    }
+    function setAlarmSecond(secondNum){
+        let hours = Math.floor(alarm /3600);
+        let minutes = Math.floor((alarm - (hours*3600))/60);
+        let seconds = alarm - (hours*3600) - (minutes*60);
+        seconds = Math.max(0,Math.min(Math.floor(secondNum),60));
+        alarm = (hours*3600) + (minutes*60) + seconds;
+        if(alarm > 86400){
+            alarm -= 86400;
+        }
+        updateAlarmDisplay();
+    }
+    function changeAlarmState(){
+        isActivedAlarm = !isActivedAlarm;
+    }
+    function alarmIsActive(){
+        return isActivedAlarm;
+    }
+    function getAlarm(){
+        return alarm;
+    }
+    function getIsAlarming(){
+        return isAlarming;
     }
     window.TimeManager = {
         //输入整数n，等待n ms。
@@ -197,6 +275,15 @@
         setHourTo: setHourTo,
         setMinuteTo: setMinuteTo,
         setSecondTo: setSecondTo,
+        getAlarm: getAlarm,
+        getAlarmString: getAlarmString,
+        setAlarmHour: setAlarmHour,
+        setAlarmMinute: setAlarmMinute,
+        setAlarmSecond: setAlarmSecond,
+        changeAlarmState: changeAlarmState,
+        alarmIsActive: alarmIsActive,
+        getIsAlarming: getIsAlarming,
+        stopAlarm: stopAlarm,
         //设置闹钟，传入一个整数秒
         setAlarm: setAlarm,
         //更新时间显示(会重置timeCount文本状态)
