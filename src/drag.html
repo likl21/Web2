@@ -162,14 +162,61 @@
             initialHourAngle = finalAngles.hour;
             initialMinuteAngle = finalAngles.minute;
         }
+        var hour_flag = false;
+        var hour_flag_reverse = false;
         function setHourTo(hourNum) {
+            usedTime = (usedTime + 86400) % 86400;
             let hours = Math.floor(usedTime / 3600);
             let minutes = Math.floor((usedTime - (hours * 3600)) / 60);
             let seconds = usedTime - (hours * 3600) - (minutes * 60);
-            hours = Math.max(0, Math.min(Math.floor(hourNum), 24));
+            if(hours <= 11){
+                hours = Math.max(0, Math.min(Math.floor(hourNum), 24));
+            }
+            else{
+                hours = (hourNum + 12) % 24;
+            }
             usedTime = (hours * 3600) + (minutes * 60) + seconds;
             updateTimeDisplay();
             updateClockDisplay();
+            if (hourNum === 0 && hour_flag === true) {
+                var temp_times = getTimeNum();
+                let pm_count = 0;
+                if(temp_times.hour < 12){
+                    temp_times.hour = 12;
+                }
+                else{
+                    temp_times.hour = 0;
+                }
+                hour_flag = false;
+                pm_count = temp_times.hour * 3600 + temp_times.second + temp_times.minute * 60;
+                usedTime = pm_count;
+                // alert(usedTime);
+                updateTimeDisplay();
+                updateClockDisplay();
+            }
+            if (hourNum === 11 && hour_flag_reverse === true) {
+                var temp_times = getTimeNum();
+                let pm_count = 0;
+                if(temp_times.hour < 12){
+                    temp_times.hour = 23;
+                }
+                else{
+                    temp_times.hour = 11;
+                }
+                hour_flag = false;
+                pm_count = temp_times.hour * 3600 + temp_times.second + temp_times.minute * 60;
+                usedTime = pm_count;
+                updateTimeDisplay();
+                updateClockDisplay();
+            }
+            hour_flag = false;
+            hour_flag_reverse = false;
+            if (hourNum === 11) {
+                hour_flag = true;
+            }
+            if (hourNum === 0) {
+                hour_flag_reverse = true;
+            }
         }
         /*function setHourTo(hourNum) {
 
@@ -198,6 +245,7 @@
         var min_flag_reverse = false;
         var total_count = 0;
         function setMinuteTo(minuteNum) {
+            usedTime = (usedTime + 86400) % 86400;
             let hours = Math.floor(usedTime / 3600);
             let minutes = Math.floor((usedTime - (hours * 3600)) / 60);
             let seconds = usedTime - (hours * 3600) - (minutes * 60);
@@ -206,7 +254,6 @@
             updateTimeDisplay();
             updateClockDisplay();
             if (minuteNum === 0 && min_flag === true) {
-
                 var temp_times = getTimeNum();
                 total_count = (temp_times.hour + 1+ 24)%24 * 3600;
                 min_flag = false;
@@ -224,8 +271,6 @@
                 updateTimeDisplay();
                 updateClockDisplay();
             }
-
-            
             min_flag = false;
             min_flag_reverse = false;
             if (minuteNum === 59) {
@@ -239,6 +284,7 @@
         var sec_flag_reverse = false;
         var sec_count = 0;
         function setSecondTo(secondNum) {
+            usedTime = (usedTime + 86400) % 86400;
             let hours = Math.floor(usedTime / 3600);
             let minutes = Math.floor((usedTime - (hours * 3600)) / 60);
             let seconds = usedTime - (hours * 3600) - (minutes * 60);
