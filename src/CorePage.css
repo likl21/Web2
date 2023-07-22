@@ -42,7 +42,7 @@ body {
     text-align: right;
 }
 #TimeBox{
-    margin: 300px auto auto auto;
+    margin: 500px auto auto auto;
     text-align: center;
 }
 #TimeCount {
@@ -68,7 +68,7 @@ body {
     text-align: center;
 }
 #AlarmText{
-    margin:0;
+    margin-top: 500px;
     font-size: 100px;
     text-align: center;
     z-index: 100;
@@ -82,8 +82,8 @@ circle
 {
     stroke: black;
     position: absolute;
-    top: 0px;
-    left: 0px;
+    top: 50px;
+    left: calc(50vw - 200px);
 }
 #ring
 {
@@ -97,10 +97,63 @@ line
 {
     stroke-width: 2px;
 }
-#secondhand ellipse, #secondhand rect, #secondhand path
+#secondhand
 {
     stroke-width: 0;
 }
+.hrot
+{
+    transform-origin: 200px 200px;
+    animation: rot 43200s none linear infinite;
+}
+.mrot
+{
+    transform-origin: 200px 200px;
+    animation: rot 3600s none linear infinite;
+}
+.srot
+{
+    transform-origin: 200px 200px;
+    animation: rot 60s none linear infinite;
+}
+.hrevrot
+{
+    transform-origin: 200px 200px;
+    animation: revrot 43200s none linear infinite;
+}
+.mrevrot
+{
+    transform-origin: 200px 200px;
+    animation: revrot 3600s none linear infinite;
+}
+.srevrot
+{
+    transform-origin: 200px 200px;
+    animation: revrot 60s none linear infinite;
+}
+@keyframes rot
+{
+    from
+    {
+        transform: rotate(0deg);
+    }
+    to
+    {
+        transform: rotate(360deg);
+    }
+}
+@keyframes revrot
+{
+    from
+    {
+        transform: rotate(360deg);
+    }
+    to
+    {
+        transform: rotate(0deg);
+    }
+}
+
 .mainmark
 {
     stroke-width: 5px;

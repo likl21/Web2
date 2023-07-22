@@ -97,7 +97,7 @@ function stopOrPlay(){
             stopOrPlayButton.innerHTML = "Play";
         }
     }
-    if(currentButtonState=="COUNTDOWN"){
+    else if(currentButtonState=="COUNTDOWN"){
         var targetState = window.TimeManager.getCurrentState()=="STOP"?"REVERSE":"STOP";
         if(targetState == "REVERSE"){
             stopOrPlayButton.innerHTML = "Pause";
@@ -107,6 +107,7 @@ function stopOrPlay(){
         }
     }
     window.TimeManager.changeStateTo(targetState);
+    
 }
 function setAlarm(){
     addClickAnimationFor(setAlarmButton);

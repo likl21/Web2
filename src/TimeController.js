@@ -8,6 +8,16 @@
     var audio = document.createElement("audio");
     audio.src = "../resources/AlarmSound.mp3";
     audio.loop = true; 
+    // 用于设置时间
+    const minuteHand = document.getElementById("minutehand");
+    const hourHand = document.getElementById("hourhand");
+    const secondHand = document.getElementById("secondhand");
+    
+    // 用于表针动画
+    const mHand = document.getElementById("mhand");
+    const sHand = document.getElementById("shand");
+    const hHand = document.getElementById("hhand");
+
     function waitMilliseconds(duration){
         return new Promise(resolve=>{setTimeout(() => {
             resolve();
@@ -57,17 +67,66 @@
         };
         return timesAngle;
     }
+    // 开始动画
+    function runAnimation()
+    {
+        mHand.classList.add("mrot");
+        sHand.classList.add("srot");
+        hHand.classList.add("hrot");
+    }
+    
+    // 停止动画（并在再次开始动画时从头播放）
+    function stopAnimation()
+    {
+        mHand.classList.remove("mrot");
+        sHand.classList.remove("srot");
+        hHand.classList.remove("hrot");
+    }
+    
+    // 开始逆向动画
+    function runRevAnimation()
+    {
+        mHand.classList.add("mrevrot");
+        sHand.classList.add("srevrot");
+        hHand.classList.add("hrevrot");
+    }
+    
+    // 停止逆向动画（并在再次开始动画时从头播放）
+    function stopRevAnimation()
+    {
+        mHand.classList.remove("mrevrot");
+        sHand.classList.remove("srevrot");
+        hHand.classList.remove("hrevrot");
+    }
+
+    // 暂停所有动画，停表时使用
+    function pauseAllAnimation()
+    {
+        mHand.style.animationPlayState =
+        sHand.style.animationPlayState =
+        hHand.style.animationPlayState = "paused";
+    }
+
+    // 开始所有动画，停表时使用
+    function startAllAnimation()
+    {
+        mHand.style.animationPlayState =
+        sHand.style.animationPlayState =
+        hHand.style.animationPlayState = "running";
+    }
+    
+    function changeClockDisplay(timesAngle)
+    {
+        minuteHand.setAttribute("transform", "rotate(" + timesAngle.minute + ", 200, 200)");
+        hourHand.setAttribute("transform", "rotate(" + timesAngle.hour + ", 200, 200)");
+        secondHand.setAttribute("transform", "rotate(" + timesAngle.second + ", 200, 200)");
+    }
+
+    // 更新表盘时间，一定要在停止所有动画后操作
     function updateClockDisplay()
     {
-        var minhand = document.getElementById("minutehand");
-        var hourhand = document.getElementById("hourhand");
-        var sechand = document.getElementById("secondhand");
-        
         var timesAngle = getAngle();
-
-        minhand.setAttribute("transform", "rotate(" + timesAngle.minute + ", 200, 200)");
-        hourhand.setAttribute("transform", "rotate(" + timesAngle.hour + ", 200, 200)");
-        sechand.setAttribute("transform", "rotate(" + timesAngle.second + ", 200, 200)");
+        changeClockDisplay(timesAngle);
     }
     function setTimeTo(seconds){
         if(seconds ==null){
@@ -128,9 +187,6 @@
                     usedTime -= 86400;
                 }
                 updateTimeDisplay();
-                
-                updateClockDisplay(); // 测试时针显示是否正确，可删去
-
                 alarmCheck();
             }
         }
@@ -158,6 +214,7 @@
         }
         return;
     }
+        
     function changeStateTo(state){
         if(currentState==state){
             return;
@@ -176,6 +233,20 @@
                 break;
         }
         updateTimeDisplay();
+        updateClockDisplay();
+        switch(currentState)
+        {
+            case "UPDATE":
+                runAnimation();
+                break;
+            case "REVERSE":
+                runRevAnimation();
+                break;
+            default:
+                stopAnimation();
+                stopRevAnimation();
+                break;
+        }
     }
     function setAlarm(x){
         if(alarm > 86400){
@@ -266,8 +337,21 @@
         getAngle: getAngle,
         //获取当前状态
         getCurrentState: getCurrentState,
+        changeClockDisplay: changeClockDisplay,
         //更新时钟指针至当前时间
         updateClockDisplay: updateClockDisplay,
+        //设置并播放正向动画
+        runAnimation: runAnimation,
+        //停止并删除正向动画
+        stopAnimation: stopAnimation,
+        //设置并播放逆向动画
+        runRevAnimation: runRevAnimation,
+        //停止并删除逆向动画
+        stopRevAnimation: stopRevAnimation,
+        //所有动画继续播放
+        startAllAnimation: startAllAnimation,
+        //所有动画暂停播放
+        pauseAllAnimation: pauseAllAnimation,
         //输入一个参数，设定时间到该参数，向下取整，单位为秒
         setTimeTo: setTimeTo,
         //输入一个整数，设定小时/分钟/秒为该整数，其他时间参数不变
@@ -295,7 +379,7 @@
         //"UPDATE"状态下，时间每秒向前流动
         //"REVERSE"状态下，时间每秒向后流动
         //所有状态均可内部处理，无需每帧调用
-        changeStateTo: changeStateTo
+        changeStateTo: changeStateTo,
     }
 })()
 function timeTest(){
