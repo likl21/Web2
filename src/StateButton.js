@@ -128,13 +128,20 @@ function bindButtonClick(){
 }
 async function UpdatePrecision(){
     let originalUpdate = window.TimeManager.updateTime;
+    var oldTime = 0;
+    var newTime = 0;
     window.TimeManager.updateTime = async function(){
+        var date = new Date();
+        oldTime = date.getTime();
         while(window.TimeManager.getCurrentState()=="UPDATE"&&currentButtonState=="STOPWATCH"){
                 await window.TimeManager.waitMilliseconds(10);
                 if(currentButtonState!="STOPWATCH"){
                     return;
                 }
-                morePrecision +=1;
+                var date = new Date();
+                newTime = date.getTime();
+                morePrecision += Math.floor((newTime - oldTime)*0.1);
+                oldTime = newTime;
                 if(morePrecision>=100){
                     window.TimeManager.setTimeTo(window.TimeManager.getCurrentTime()+1);
                     if(window.TimeManager.getCurrentTime() > 86400){
