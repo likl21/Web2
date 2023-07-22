@@ -34,6 +34,7 @@ function changeButtonState(state){
             stopOrPlayButton.style.display = "none";
             alarmText.style.display = "";
             setAlarmButton.style.display = "";
+            window.TimeManager.updateTimeDisplay();
             break;
         case "STOPWATCH":
             window.TimeManager.changeStateTo("STOP");
