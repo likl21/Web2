@@ -137,7 +137,7 @@ async function UpdatePrecision(){
         while(window.TimeManager.getCurrentState()=="UPDATE"&&currentButtonState=="STOPWATCH"){
                 await window.TimeManager.waitMilliseconds(10);
                 if(currentButtonState!="STOPWATCH"){
-                    return;
+                    break;
                 }
                 var date = new Date();
                 newTime = date.getTime();
