@@ -11,6 +11,7 @@ var morePrecision = 0;
 var timeCountText = document.getElementById("TimeCount");
 var alarmText = document.getElementById("AlarmText");
 var precisionDisplay;
+var isPrecisionUpdating = false;
 function getCurrentButtonState(){
     return currentButtonState;
 }
@@ -136,9 +137,14 @@ async function UpdatePrecision(){
     var oldTime = 0;
     var newTime = 0;
     window.TimeManager.updateTime = async function(){
+        if(isPrecisionUpdating){
+            window.TimeManager.updateTime = originalUpdate;
+            return;
+        }
         var date = new Date();
         oldTime = date.getTime();
         while(window.TimeManager.getCurrentState()=="UPDATE"&&currentButtonState=="STOPWATCH"){
+                isPrecisionUpdating = true;
                 await window.TimeManager.waitMilliseconds(10);
                 if(currentButtonState!="STOPWATCH"){
                     break;
@@ -157,6 +163,7 @@ async function UpdatePrecision(){
                 }
                 window.ButtonManager.updatePrecisionDisplay();
         }
+        isPrecisionUpdating =false;
         window.TimeManager.updateTime = originalUpdate;
     }
     
