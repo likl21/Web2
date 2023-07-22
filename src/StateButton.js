@@ -24,6 +24,9 @@ function changeButtonState(state){
     }
     if(currentButtonState == "STOPWATCH"){
         precisionDisplay.remove();
+        if(window.TimeManager.getCurrentState()=="UPDATE"){
+            stopOrPlay();
+        }
     }
     window.localStorage.setItem(currentButtonState,window.TimeManager.getCurrentTime());
     currentButtonState = state;
