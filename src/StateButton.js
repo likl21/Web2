@@ -14,6 +14,9 @@ var precisionDisplay;
 function getCurrentButtonState(){
     return currentButtonState;
 }
+function getMorePrecision(){
+    return morePrecision;
+}
 function changeButtonState(state){
     if(currentButtonState == state){
         return;
@@ -176,7 +179,8 @@ window.ButtonManager ={
     updatePrecisionDisplay: updatePrecisionDisplay,
     stopOrPlay: stopOrPlay,
     initeButton: initeButton,
-    setAlarmButton: setAlarmButton
+    setAlarmButton: setAlarmButton,
+    getMorePrecision: getMorePrecision
 }
 })();
 ButtonManager.initeButton();
