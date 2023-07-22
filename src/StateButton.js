@@ -58,8 +58,9 @@ async function addClickAnimationFor(button){
     button.style = originalStyle;
 }
 function createPrecisionDisplay(){
+    let precision = Math.floor(morePrecision);
     precisionDisplay = document.createElement("p");
-    precisionDisplay.innerHTML = "."+morePrecision;
+    precisionDisplay.innerHTML = "."+precision;
     timeCountText.parentElement.appendChild(precisionDisplay);
     precisionDisplay.style.position = "relative";
     precisionDisplay.style.bottom = "380px";
@@ -140,7 +141,7 @@ async function UpdatePrecision(){
                 }
                 var date = new Date();
                 newTime = date.getTime();
-                morePrecision += Math.floor((newTime - oldTime)*0.1);
+                morePrecision += (newTime - oldTime)*0.1;
                 oldTime = newTime;
                 if(morePrecision>=100){
                     window.TimeManager.setTimeTo(window.TimeManager.getCurrentTime()+1);
@@ -160,7 +161,8 @@ function updatePrecisionDisplay(){
     if(morePrecision>=100){
         morePrecision = 0;
     }
-    precisionDisplay.innerHTML = "."+ (morePrecision <= 10? "0"+String(morePrecision):morePrecision);
+    let precision = Math.floor(morePrecision);
+    precisionDisplay.innerHTML = "."+ (precision <= 10? "0"+String(precision):precision);
 }
 function initeButton(){
     stopOrPlayButton.style.display = "none";
