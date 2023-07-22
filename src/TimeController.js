@@ -6,6 +6,7 @@
     var isAlarming = false;
     var alarm = 0;
     var audio = document.createElement("audio");
+    var isUpdating = false;
     audio.src = "../resources/AlarmSound.mp3";
     audio.loop = true; 
     // 用于设置时间
@@ -193,14 +194,17 @@
         return;
     }
     async function updateTimeReverse(){
+        if(isUpdating){
+            return;
+        }
         while(currentState=="REVERSE"){
+            isUpdating = true;
             await waitMilliseconds(1000);
             if(currentState=="REVERSE"){
                 usedTime -= 1;
                 if(usedTime > 86400){
                     usedTime -= 86400;
                 }else if(usedTime < 0){
-                    
                     usedTime = 0;
                     audio.play();
                     alert("Time Out!");
@@ -212,6 +216,7 @@
                 updateTimeDisplay(); 
             }
         }
+        isUpdating =false;
         return;
     }
         
