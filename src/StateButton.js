@@ -135,10 +135,12 @@ function setAlarm(){
 }
 function toZero(){
     addClickAnimationFor(toZeroButton);
+    window.TimeManager.setTimeTo(0);
     morePrecision = 0;
     window.TimeManager.updateTimeDisplay();
     updatePrecisionDisplay();
-    window.TimeManager.updateClockDisplay();
+    window.TimeManager.toZeroClock();
+    window.TimeManager.changeStateTo("STOP");
 }
 function bindButtonClick(){
     clockButton.onclick = changeToClock;
@@ -200,11 +202,12 @@ window.ButtonManager ={
     bindButtonClick: bindButtonClick,
     getCurrentButtonState: getCurrentButtonState,
     addClickAnimationFor: addClickAnimationFor,
+    UpdatePrecision: UpdatePrecision,
     updatePrecisionDisplay: updatePrecisionDisplay,
     stopOrPlay: stopOrPlay,
     initeButton: initeButton,
     setAlarmButton: setAlarmButton,
-    getMorePrecision: getMorePrecision
+    getMorePrecision: getMorePrecision,
 }
 })();
 ButtonManager.initeButton();

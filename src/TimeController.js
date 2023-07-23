@@ -274,6 +274,8 @@
             isMinuteHandSelected = false;
             isHourHandSelected = false;
             window.TimeManager.changeStateTo(initialState);
+            if(isNeedPrecision && window.ButtonManager.getCurrentButtonState() == "STOPWATCH")
+                window.ButtonManager.UpdatePrecision();
         }
     }
     var hour_flag = false;
@@ -483,6 +485,12 @@
 
     // 初始更新时间和表盘显示
 
+    function toZeroClock()
+    {
+        stopAnimation();
+        changeClockDisplay({hour: 0, minute: 0, second: 0});
+    }
+
     function changeStateTo(state){
         
         currentState = state;
@@ -615,6 +623,7 @@
         updateClockDisplay: updateClockDisplay,
         //更新时钟指针至当前精确时间
         updatePreciseClockDisplay: updatePreciseClockDisplay,
+        toZeroClock: toZeroClock,
         //isNeedPrecision: isNeedPrecision,
         //设置并播放正向动画
         runAnimation: runAnimation,
