@@ -54,7 +54,7 @@ function changeButtonState(state){
             window.TimeManager.changeStateTo("STOP");
             window.TimeManager.updateTimeDisplay();
             stopOrPlayButton.style.display = "";
-            toZeroButton.style.display = "";
+            toZeroButton.style.display = "none";
             alarmText.style.display = "none";
             setAlarmButton.style.display = "none";
             break;
@@ -135,7 +135,6 @@ function setAlarm(){
 }
 function toZero(){
     addClickAnimationFor(toZeroButton);
-    window.TimeManager.setTimeTo(0);
     morePrecision = 0;
     window.TimeManager.updateTimeDisplay();
     updatePrecisionDisplay();
