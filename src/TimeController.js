@@ -268,10 +268,13 @@
         // secondHand.classList.remove('selected');
         // minuteHand.classList.remove('selected');
         // hourHand.classList.remove('selected');
-        isSecondHandSelected = false;
-        isMinuteHandSelected = false;
-        isHourHandSelected = false;
-        window.TimeManager.changeStateTo(initialState);
+        if(isSecondHandSelected | isMinuteHandSelected | isHourHandSelected)
+        {
+            isSecondHandSelected = false;
+            isMinuteHandSelected = false;
+            isHourHandSelected = false;
+            window.TimeManager.changeStateTo(initialState);
+        }
     }
     var hour_flag = false;
     var hour_flag_reverse = false;
@@ -412,6 +415,8 @@
 
     // 鼠标移动事件处理程序
     function handleMouseMove(event) {
+        if(!(isSecondHandSelected | isMinuteHandSelected | isHourHandSelected))
+            return;
         var rect = clock.getBoundingClientRect();
         var centerX = rect.left + rect.width / 2;
         var centerY = rect.top + rect.height / 2;
