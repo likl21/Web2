@@ -6,6 +6,7 @@ var stopwatchButton = document.getElementById("StateButton--Stopwatch");
 var countdownButton = document.getElementById("StateButton--Countdown");
 var stopOrPlayButton = document.getElementById("StopOrPlayButton");
 var setAlarmButton = document.getElementById("SetAlarmButton");
+var toZeroButton = document.getElementById("ToZeroButton");
 var currentButtonState = "CLOCK";
 var morePrecision = 0;
 var timeCountText = document.getElementById("TimeCount");
@@ -35,6 +36,7 @@ function changeButtonState(state){
         case "CLOCK":
             window.TimeManager.changeStateTo("UPDATE");
             stopOrPlayButton.style.display = "none";
+            toZeroButton.style.display = "none";
             alarmText.style.display = "";
             setAlarmButton.style.display = "";
             window.TimeManager.updateTimeDisplay();
@@ -44,6 +46,7 @@ function changeButtonState(state){
             window.TimeManager.updateTimeDisplay();
             createPrecisionDisplay();
             stopOrPlayButton.style.display = "";
+            toZeroButton.style.display = "";
             alarmText.style.display = "none";
             setAlarmButton.style.display = "none";
             break;
@@ -51,6 +54,7 @@ function changeButtonState(state){
             window.TimeManager.changeStateTo("STOP");
             window.TimeManager.updateTimeDisplay();
             stopOrPlayButton.style.display = "";
+            toZeroButton.style.display = "";
             alarmText.style.display = "none";
             setAlarmButton.style.display = "none";
             break;
@@ -129,12 +133,21 @@ function setAlarm(){
         setAlarmButton.innerHTML = "Set&nbsp;Alarm";
     }
 }
+function toZero(){
+    addClickAnimationFor(toZeroButton);
+    window.TimeManager.setTimeTo(0);
+    morePrecision = 0;
+    window.TimeManager.updateTimeDisplay();
+    updatePrecisionDisplay();
+    window.TimeManager.updateClockDisplay();
+}
 function bindButtonClick(){
     clockButton.onclick = changeToClock;
     stopwatchButton.onclick = changeToStopwatch;
     countdownButton.onclick = changeToCountdown;
     stopOrPlayButton.onclick = stopOrPlay;
     setAlarmButton.onclick = setAlarm;
+    toZeroButton.onclick = toZero;
 }
 async function UpdatePrecision(){
     let originalUpdate = window.TimeManager.updateTime;
@@ -181,6 +194,7 @@ function updatePrecisionDisplay(){
 }
 function initeButton(){
     stopOrPlayButton.style.display = "none";
+    toZeroButton.style.display = "none";
     bindButtonClick();
 }
 window.ButtonManager ={
