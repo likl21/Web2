@@ -96,10 +96,12 @@ line
 #hourhand, #minutehand
 {
     stroke-width: 2px;
+    cursor: pointer;
 }
 #secondhand
 {
     stroke-width: 0;
+    cursor: pointer;
 }
 .hrot
 {
