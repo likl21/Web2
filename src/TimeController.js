@@ -227,6 +227,7 @@
                     audio.pause();
                     window.ButtonManager.stopOrPlay();
                     changeStateTo("STOP");
+                    isUpdating =false;
                     return true;
                 }
                 updateTimeDisplay(); 
