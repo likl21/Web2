@@ -220,7 +220,7 @@
                 usedTime -= 1;
                 if(usedTime > 86400){
                     usedTime -= 86400;
-                }else if(usedTime < 0){
+                }else if(usedTime <= 0){
                     usedTime = 0;
                     audio.play();
                     alert("Time Out!");
